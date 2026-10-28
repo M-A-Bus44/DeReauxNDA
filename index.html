@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUTUAL CONFIDENTIALITY AGREEMENT - DEREAUX & PARTNERS LLP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: #080707;
+            color: #c4b8aa;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(20, 10, 10, 0.8), rgba(4, 3, 3, 0.98)),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+        }
+
+        .serif-header {
+            font-family: 'Cinzel', serif;
+        }
+
+        .legal-paper {
+            background-color: #12100e;
+            border: 1px solid #2a221b;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 15px rgba(139, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .legal-paper::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 1px solid rgba(178, 34, 34, 0.15);
+            margin: 8px;
+            pointer-events: none;
+        }
+
+        .stamp-mark {
+            border: 3px double #8b0000;
+            color: #a81c1c;
+            transform: rotate(-12deg);
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+            text-shadow: 0 0 5px rgba(168, 28, 28, 0.5);
+        }
+
+        .blood-checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #5a1818;
+            background: #0a0808;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .blood-checkbox:checked {
+            background-color: #6b0909;
+            border-color: #b31212;
+            box-shadow: 0 0 8px #8b0000;
+        }
+
+        .blood-checkbox:checked::after {
+            content: '†';
+            position: absolute;
+            color: #f5d6d6;
+            font-size: 16px;
+            top: -3px;
+            left: 4px;
+            font-weight: bold;
+        }
+
+        .flicker-animation {
+            animation: flicker 0.15s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.97; filter: contrast(100%) hue-rotate(0deg); }
+            50% { opacity: 0.6; filter: contrast(150%) hue-rotate(15deg); }
+            100% { opacity: 0.9; filter: contrast(110%) hue-rotate(-10deg); }
+        }
+
+        .glitch-screen {
+            animation: glitch 0.2s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080707;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a1515;
+            border: 1px solid #4a1e1e;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5c1d1d;
+        }
+
+        .seal-bg {
+            background: radial-gradient(circle, rgba(139,0,0,0.1) 0%, rgba(0,0,0,0) 70%);
+        }
+    </style>
+</head>
+<body class="min-h-screen py-6 px-3 sm:px-6 md:px-12 flex flex-col items-center justify-start text-sm sm:text-base leading-relaxed">
+
+    <!-- Audio & Ambient Controls Banner -->
+    <div class="w-full max-w-4xl mb-6 flex flex-wrap items-center justify-between gap-4 p-3 bg-stone-950/80 border border-stone-800 rounded-md text-xs">
+        <div class="flex items-center gap-3">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-red-800 animate-pulse"></span>
+            <span class="tracking-widest text-stone-400 uppercase font-sans font-semibold">SECURE TRANSMISSION // DE REAUX & PARTNERS PERIMETER</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <button id="audioToggleBtn" onclick="toggleAudio()" class="px-3 py-1.5 bg-stone-900 hover:bg-stone-800 border border-red-950 hover:border-red-800 text-stone-300 rounded transition flex items-center gap-2 font-sans">
+                <svg id="audioIcon" class="w-4 h-4 text-red-700" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM12.293 7.293a1 1 0 011.414 0 3 3 0 010 4.242 1 1 0 01-1.414-1.414 1 1 0 000-1.414 1 1 0 010-1.414z"/>
+                </svg>
+                <span id="audioStatusText">ENABLE RUSTED IDLE MOTIF</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Legal Document Container -->
+    <main id="documentMain" class="w-full max-w-4xl legal-paper p-6 sm:p-10 md:p-14 rounded-sm text-stone-300 relative overflow-hidden transition-all duration-300">
+        
+        <!-- Header / Watermark -->
+        <div class="absolute top-10 right-8 pointer-events-none opacity-20 sm:opacity-30">
+            <div class="stamp-mark p-3 sm:p-4 text-center text-xs sm:text-sm font-bold">
+                CONFIDENTIAL<br>SOLIS TENEBRIS<br>RESTRICTED
+            </div>
+        </div>
+
+        <!-- Document Letterhead -->
+        <header class="border-b border-stone-800 pb-8 mb-8 text-center">
+            <h2 class="serif-header text-xs sm:text-sm tracking-widest text-red-800 font-bold uppercase mb-1">Law Offices of</h2>
+            <h1 class="serif-header text-2xl sm:text-3xl md:text-4xl text-stone-100 font-black tracking-wider mb-2">DEREAUX & PARTNERS, LLP</h1>
+            <p class="text-xs text-stone-500 uppercase tracking-widest font-sans mb-4">Attorneys and Counselors at Law • Admitted in All Terrestrial & Infernal Jurisdictions</p>
+            <div class="text-xs text-stone-400 font-mono bg-stone-950/60 p-2 border border-stone-900 inline-block rounded">
+                Counsel of Record: <span class="text-stone-200">Harold DeReaux, Esq.</span> (Managing Partner & Senior Avatar in Interest)<br>
+                Official Service Inquiry: <a href="mailto:DeReaux.PartnersLLP@gmail.com" class="text-red-900 hover:text-red-700 underline">DeReaux.PartnersLLP@gmail.com</a>
+            </div>
+        </header>
+
+        <!-- Document Title -->
+        <section class="text-center mb-10">
+            <h3 class="serif-header text-lg sm:text-xl font-bold text-stone-100 uppercase tracking-wide border-y border-stone-800 py-3">
+                MUTUAL CONFIDENTIALITY, PRODUCTION PERIMETER ACCESS,<br>AND OPERATIONAL INDEMNITY AGREEMENT
+            </h3>
+            <p class="text-xs text-stone-500 mt-3 italic">
+                Execution mandatory prior to entry into the Solis Tenebris Operational Zone or engagement with Coon With A Spoon Productions.
+            </p>
+        </section>
+
+        <!-- Preamble -->
+        <p class="mb-6 leading-relaxed">
+            <strong class="text-stone-100">THIS MUTUAL CONFIDENTIALITY, PRODUCTION PERIMETER ACCESS, AND OPERATIONAL INDEMNITY AGREEMENT</strong> (the "Agreement") is entered into and made effective as of this solar cycle by and between <strong class="text-stone-200">Coon With A Spoon Productions</strong> ("Disclosing Party") and the undersigned <strong class="text-stone-200">Participating Entity / Reader</strong> ("Receiving Party"), with formal legal oversight, notarization, and enforcement administered by <strong class="text-stone-200">DeReaux & Partners, LLP</strong>.
+        </p>
+
+        <!-- Section 1 -->
+        <div class="space-y-4 mb-8">
+            <h4 class="serif-header font-bold text-stone-200 border-b border-stone-800/80 pb-1 text-base">1. CONFIDENTIALITY AND PROPRIETARY INFORMATION</h4>
+            
+            <p><strong class="text-stone-300">1.1 Scope of Confidential Information.</strong> "Confidential Information" refers to all non-public, proprietary, or sensitive information disclosed by Disclosing Party, including but not limited to source code, architecture diagrams, occult infrastructure credentials, ritualistic metrics, business strategies, and raw human telemetry.</p>
+            
+            <p><strong class="text-stone-300">1.2 Non-Disclosure Obligations.</strong> The Receiving Party agrees to hold all Confidential Information in strict confidence and shall not disclose such information to any third party without prior written consent. Standard of care shall be no less than reasonable care, and at minimum the degree of care used to preserve one's own sanity.</p>
+            
+            <p><strong class="text-stone-300">1.3 Exclusions.</strong> Confidential Information does not include information that: (a) is or becomes publicly known through no fault of Receiving Party; (b) was already lawfully in Receiving Party's possession; or (c) is prepared to partake in the ceremonial Bloodletting of the Brotherhood under the pale moon light.</p>
+            
+            <!-- Interactive Clause 1 -->
+            <div class="p-4 bg-stone-950/70 border-l-2 border-red-900 my-4 text-xs sm:text-sm">
+                <p class="text-red-200 font-semibold mb-2"><strong class="text-red-700">1.4 Omen Clause.</strong> Exposure to Solis Tenebris “OMEN” may result in Temporal Displacement, Extreme Paranoia, and the permanent loss of personal effects, memory, or shadow reflection. Disclosing Party shall provide no medical treatment nor advice under Section 17.4 of the village charter.</p>
+                <label class="flex items-center gap-3 mt-3 cursor-pointer text-stone-400 hover:text-stone-200">
+                    <input type="checkbox" id="initial1" class="blood-checkbox" onchange="validateCheckboxes()">
+                    <span><strong>[INITIAL HERE]</strong> I acknowledge exposure risks to OMEN and waive medical recourse under Section 17.4.</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="space-y-4 mb-8">
+            <h4 class="serif-header font-bold text-stone-200 border-b border-stone-800/80 pb-1 text-base">2. PRODUCTION PERIMETER ACCESS CONTROLS</h4>
+            
+            <p><strong class="text-stone-300">2.1 Granted Scope.</strong> Access to production environments, networks, databases, and physical control planes ("Production Perimeter") is granted strictly on a need-to-know basis and exclusively for authorized operational tasks.</p>
+            
+            <p><strong class="text-stone-300">2.2 Security Protocols.</strong> All authorized personnel accessing the Production Perimeter must utilize hardware-backed Multi-Factor Authentication (MFA). Sessions are subject to continuous logging, audit, and real-time spectral monitoring.</p>
+            
+            <p class="text-stone-300">Perimeter shall not be breached during the effective time of service provided. Violation of this protocol may be subject to Judgement by the High Council, including Banishment, Public Dismemberment, Selection for Processing, and immediate conveyance into the <strong>MINESHAFT</strong>.</p>
+            
+            <p><strong class="text-stone-300">2.3 Prohibited Activities & Ordinances.</strong> Misconduct not becoming of the religious beliefs of the village shall be prosecuted by the village council with penalties distributed under their Law. Misconduct includes Fornication, Imbibement, Witchcraft/Luciferianism, or any language restricted under Village Ordinance 23.1 and ordinances pertaining to Sacrificial Offerings of the Wicked.</p>
+
+            <!-- Interactive Clause 2 -->
+            <div class="p-4 bg-stone-950/70 border-l-2 border-red-900 my-4 text-xs sm:text-sm">
+                <p class="text-stone-300"><strong class="text-red-700">2.4 Right of Unannounced Inspection.</strong> Counsel of Record reserves the right to conduct unannounced physical, psychological, and spectral audits of the Receiving Party’s workspace at any hour. Failure to maintain adequate mental fortitude during inspection constitutes an immediate material breach.</p>
+                <label class="flex items-center gap-3 mt-3 cursor-pointer text-stone-400 hover:text-stone-200">
+                    <input type="checkbox" id="initial2" class="blood-checkbox" onchange="validateCheckboxes()">
+                    <span><strong>[INITIAL HERE]</strong> I submit to unannounced spectral audits and consent to High Council MINESHAFT jurisdiction.</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="space-y-4 mb-8">
+            <h4 class="serif-header font-bold text-stone-200 border-b border-stone-800/80 pb-1 text-base">3. OPERATIONAL INDEMNIFICATION</h4>
+            <p><strong class="text-stone-300">3.1 Indemnification Scope.</strong> Each party agrees to defend, indemnify, and hold harmless the other party and DeReaux & Partners, LLP from claims, liabilities, losses, and damages arising out of gross negligence, breach of perimeter, or <em>Spiritual Apparition Exposure</em> (note: this does not include standard room-and-board service provided by the Indemnifying Party).</p>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="space-y-4 mb-8">
+            <h4 class="serif-header font-bold text-stone-200 border-b border-stone-800/80 pb-1 text-base">4. LIMITATION OF LIABILITY</h4>
+            
+            <!-- Interactive Clause 3 -->
+            <div class="p-4 bg-stone-950/70 border-l-2 border-red-900 my-4 text-xs sm:text-sm">
+                <p class="text-stone-300"><strong class="text-red-700">4.1 Catastrophic Waiver.</strong> In the event of catastrophe, the Indemnified Party shall assume all liability, and assume <em>zero</em> liability to the Indemnifying Party. Terms include, but are not limited to: slips, falls, bumps, bites, Necrosis, Viral Infection, Demonic Possession, or spontaneous skeletal transmutation.</p>
+                <label class="flex items-center gap-3 mt-3 cursor-pointer text-stone-400 hover:text-stone-200">
+                    <input type="checkbox" id="initial3" class="blood-checkbox" onchange="validateCheckboxes()">
+                    <span><strong>[INITIAL HERE]</strong> I assume full personal liability for Demonic Possession and Spontaneous Skeletal Transmutation.</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="space-y-4 mb-8">
+            <h4 class="serif-header font-bold text-stone-200 border-b border-stone-800/80 pb-1 text-base">5. TERM AND TERMINATION</h4>
+            <p><strong class="text-stone-300">5.1 Term.</strong> This Agreement shall remain in full force for a period of one (1) year, automatically renewing in perpetuity unless terminated under strict adherence to Section 5.2.</p>
+            
+            <!-- Interactive Clause 4 -->
+            <div class="p-4 bg-stone-950/70 border-l-2 border-red-900 my-4 text-xs sm:text-sm">
+                <p class="text-stone-300"><strong class="text-red-700">5.2 Specific Termination Protocol.</strong> Either party may terminate this Agreement by providing thirty (30) days prior written notice, <em>provided that</em> three (3) vials containing tears from a local virgin encased in sulfur are delivered directly to DeReaux & Partners, LLP in accordance with Local, State, and Infernal Law.</p>
+                <label class="flex items-center gap-3 mt-3 cursor-pointer text-stone-400 hover:text-stone-200">
+                    <input type="checkbox" id="initial4" class="blood-checkbox" onchange="validateCheckboxes()">
+                    <span><strong>[INITIAL HERE]</strong> I accept the 3-vial sulfur/virgin tears termination escrow condition.</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="space-y-4 mb-10">
+            <h4 class="serif-header font-bold text-stone-200 border-b border-stone-800/80 pb-1 text-base">6. GENERAL PROVISIONS & TRIBUNAL VENUE</h4>
+            <p><strong class="text-stone-300">6.1 Governing Law.</strong> Blood Oaths transpiring within the perimeter are subject to State and Local Law in accordance with the First Day Baptist Church and its members.</p>
+            <p><strong class="text-stone-300">6.2 Dispute Resolution & Tribunal.</strong> Any legal action, binding arbitration, or metaphysical dispute shall be adjudicated exclusively before a tribunal convened by <strong>DeReaux & Partners, LLP</strong>, sitting in chambers within the geographical limits of the Solis Tenebris Operational Zone. Direct legal counsel or unsolicited advice may be sought via <a href="mailto:DeReaux.PartnersLLP@gmail.com" class="text-red-800 underline">DeReaux.PartnersLLP@gmail.com</a>.</p>
+        </div>
+
+        <!-- EXECUTION / SIGNATURE BLOCK -->
+        <section class="border-t-2 border-stone-800 pt-8 mt-12">
+            <h3 class="serif-header text-center text-lg font-bold text-stone-100 uppercase tracking-widest mb-8">IN WITNESS WHEREOF & EXECUTION BLOCK</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                <!-- Disclosing Party -->
+                <div class="p-4 bg-stone-950/40 border border-stone-900 rounded">
+                    <h5 class="serif-header font-bold text-red-900 uppercase tracking-wider text-xs mb-3">Party A: Disclosing Authority</h5>
+                    <p class="text-xs text-stone-400 mb-1">Entity: <strong class="text-stone-200">Coon With A Spoon Productions</strong></p>
+                    <p class="text-xs text-stone-400 mb-1">Representative: <strong class="text-stone-200">M.A. (Editor-In-Chief)</strong></p>
+                    <p class="text-xs text-stone-400 mb-4">Date Stamp: <strong class="text-stone-200">261027-1407</strong></p>
+                    <div class="border-b border-stone-700 pb-1 pt-4 text-center">
+                        <span class="serif-header text-lg italic text-stone-300">M. A.</span>
+                    </div>
+                    <p class="text-[10px] text-stone-600 text-center mt-1 uppercase tracking-widest">Authorized Executive Signature</p>
+                </div>
+
+                <!-- Counsel Signature & Stamp -->
+                <div class="p-4 bg-stone-950/40 border border-stone-900 rounded seal-bg relative">
+                    <h5 class="serif-header font-bold text-red-900 uppercase tracking-wider text-xs mb-3">Counsel of Record & Notary</h5>
+                    <p class="text-xs text-stone-400 mb-1">Firm: <strong class="text-stone-200">DeReaux & Partners, LLP</strong></p>
+                    <p class="text-xs text-stone-400 mb-1">Senior Partner: <strong class="text-stone-200">Harold DeReaux, Esq.</strong></p>
+                    <p class="text-xs text-stone-400 mb-4">Status: <strong class="text-stone-200">Ratified & Binding</strong></p>
+                    <div class="border-b border-stone-700 pb-1 pt-2 text-center">
+                        <span class="serif-header text-xl text-red-800 font-bold tracking-widest" style="font-family: 'Cinzel', serif;">H. DeReaux</span>
+                    </div>
+                    <p class="text-[10px] text-stone-600 text-center mt-1 uppercase tracking-widest">Avatar in Interest Seal Affixed</p>
+                </div>
+            </div>
+
+            <!-- Party B Signature Input Block -->
+            <div class="p-6 bg-stone-950 border border-red-950/80 rounded-md">
+                <h4 class="serif-header text-sm font-bold text-stone-200 uppercase tracking-wider mb-4 text-center">PARTY B: RECEIVING ENTITY DIGITAL EXECUTION</h4>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-stone-400 mb-1">Full Legal Name</label>
+                        <input type="text" id="signerName" placeholder="Enter your full legal name" class="w-full bg-stone-900 border border-stone-800 focus:border-red-800 text-stone-200 p-2 text-xs rounded outline-none font-mono" oninput="validateForm()">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-widest text-stone-400 mb-1">Blood Oath Initial</label>
+                        <input type="text" id="signerInitials" maxlength="3" placeholder="e.g. HDR" class="w-full bg-stone-900 border border-stone-800 focus:border-red-800 text-stone-200 p-2 text-xs rounded outline-none font-mono uppercase" oninput="validateForm()">
+                    </div>
+                </div>
+
+                <!-- Signature Pad -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs uppercase tracking-widest text-stone-400">Digital Signature Canvas</label>
+                        <button onclick="clearCanvas()" class="text-[10px] text-stone-500 hover:text-red-700 underline font-sans">Clear Canvas</button>
+                    </div>
+                    <div class="border border-stone-800 rounded bg-stone-900/90 relative">
+                        <canvas id="sigCanvas" class="w-full h-32 cursor-crosshair touch-none"></canvas>
+                        <span id="canvasPlaceholder" class="absolute inset-0 flex items-center justify-center text-stone-700 text-xs pointer-events-none italic font-sans">
+                            Draw signature here using mouse or touch
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Execution Button -->
+                <button id="submitBtn" disabled onclick="executeContract()" class="w-full py-4 bg-stone-900 border border-stone-800 text-stone-600 font-bold uppercase tracking-widest text-sm rounded transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Complete All Initials & Signature To Bind Contract
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Creepy Popup Modal upon Contract Execution -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black/95 hidden items-center justify-center z-50 p-4">
+        <div class="max-w-lg w-full bg-stone-950 border-2 border-red-900 p-8 rounded shadow-2xl text-center relative overflow-hidden">
+            <div class="stamp-mark p-3 text-sm font-bold inline-block mb-6">
+                CONTRACT RATIFIED IN BLOOD
+            </div>
+            <h3 class="serif-header text-2xl font-black text-stone-100 mb-2">BINDING ACKNOWLEDGED</h3>
+            <p class="text-xs text-stone-400 mb-6 leading-relaxed font-mono">
+                Thank you, <span id="modalNameDisplay" class="text-red-600 font-bold"></span>.<br>
+                Your signature has been registered with <strong>DeReaux & Partners, LLP</strong>.<br>
+                The High Council has logged your baseline coordinates.
+            </p>
+            <div class="p-4 bg-stone-900/80 border border-stone-800 text-stone-300 text-xs mb-6 text-left font-mono">
+                <p class="text-red-800 font-bold mb-1">NOTICE OF RECORD:</p>
+                <p>Do not attempt to clear browser local telemetry or alter geographical proximity to Stone Jug, Michigan. Harold DeReaux, Esq. will be in touch shortly.</p>
+            </div>
+            <button onclick="closeModal()" class="px-6 py-2 bg-red-950 hover:bg-red-900 border border-red-700 text-red-200 font-bold uppercase text-xs tracking-widest rounded transition">
+                Acknowledge Fate
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Canvas Logic
+        const canvas = document.getElementById('sigCanvas');
+        const ctx = canvas.getContext('2d');
+        const placeholder = document.getElementById('canvasPlaceholder');
+        let isDrawing = false;
+        let hasSigned = false;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.strokeStyle = "#8b0000";
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = "round";
+        }
+        window.addEventListener('resize', resizeCanvas);
+        setTimeout(resizeCanvas, 100);
+
+        function startDrawing(e) {
+            isDrawing = true;
+            placeholder.style.display = 'none';
+            draw(e);
+        }
+
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+                ctx.beginPath();
+                hasSigned = true;
+                validateForm();
+            }
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            ctx.lineTo(clientX - rect.left, clientY - rect.top);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(clientX - rect.left, clientY - rect.top);
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mousemove', draw);
+
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); });
+        canvas.addEventListener('touchend', (e) => { e.preventDefault(); stopDrawing(); });
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            placeholder.style.display = 'flex';
+            hasSigned = false;
+            validateForm();
+        }
+
+        // Form Validation Check
+        function validateCheckboxes() {
+            validateForm();
+        }
+
+        function validateForm() {
+            const cb1 = document.getElementById('initial1').checked;
+            const cb2 = document.getElementById('initial2').checked;
+            const cb3 = document.getElementById('initial3').checked;
+            const cb4 = document.getElementById('initial4').checked;
+            const name = document.getElementById('signerName').value.trim();
+            const initials = document.getElementById('signerInitials').value.trim();
+
+            const btn = document.getElementById('submitBtn');
+
+            if (cb1 && cb2 && cb3 && cb4 && name.length > 1 && initials.length > 0 && hasSigned) {
+                btn.disabled = false;
+                btn.classList.remove('bg-stone-900', 'text-stone-600', 'border-stone-800');
+                btn.classList.add('bg-red-950', 'text-red-100', 'border-red-700', 'hover:bg-red-900', 'shadow-lg', 'shadow-red-950/50');
+                btn.innerText = "EXECUTE BINDING CONTRACT";
+            } else {
+                btn.disabled = true;
+                btn.classList.add('bg-stone-900', 'text-stone-600', 'border-stone-800');
+                btn.classList.remove('bg-red-950', 'text-red-100', 'border-red-700', 'hover:bg-red-900', 'shadow-lg', 'shadow-red-950/50');
+                btn.innerText = "Complete All Initials & Signature To Bind Contract";
+            }
+        }
+
+        // Tone.js Sound Generator (Rusted Screaming Idle Motif)
+        let isAudioPlaying = false;
+        let noise, filter, lfo, osc;
+
+        async function initAudio() {
+            await Tone.start();
+            
+            // Low drone oscillator
+            osc = new Tone.Oscillator(45, "sawtooth").toDestination();
+            osc.volume.value = -18;
+
+            // Rusted Metal Noise Generator
+            noise = new Tone.Noise("brown");
+            
+            // Resonant Filter for screeching/screaming idle
+            filter = new Tone.Filter({
+                type: "bandpass",
+                frequency: 400,
+                Q: 6
+            });
+
+            // LFO to modulate filter frequency creating uneven screaming idle rhythm
+            lfo = new Tone.LFO({
+                frequency: "0.2Hz",
+                min: 200,
+                max: 1200
+            });
+
+            lfo.connect(filter.frequency);
+            noise.connect(filter);
+            filter.toDestination();
+            filter.gain.value = 0.15;
+
+            osc.start();
+            noise.start();
+            lfo.start();
+            isAudioPlaying = true;
+            document.getElementById('audioStatusText').innerText = "DISABLE RUSTED IDLE MOTIF";
+            document.getElementById('audioStatusText').classList.add('text-red-500');
+        }
+
+        function toggleAudio() {
+            if (!isAudioPlaying) {
+                initAudio();
+            } else {
+                if (osc) osc.stop();
+                if (noise) noise.stop();
+                if (lfo) lfo.stop();
+                isAudioPlaying = false;
+                document.getElementById('audioStatusText').innerText = "ENABLE RUSTED IDLE MOTIF";
+                document.getElementById('audioStatusText').classList.remove('text-red-500');
+            }
+        }
+
+        // Contract Execution Visual Effects & Modal Trigger
+        function executeContract() {
+            const name = document.getElementById('signerName').value.trim();
+            document.getElementById('modalNameDisplay').innerText = name;
+
+            // Visual distortion flicker on main document
+            const doc = document.getElementById('documentMain');
+            doc.classList.add('flicker-animation', 'glitch-screen');
+
+            // Play screeching sting if audio active
+            if (isAudioPlaying && filter) {
+                filter.frequency.rampTo(2500, 0.2);
+                setTimeout(() => filter.frequency.rampTo(300, 1), 500);
+            }
+
+            setTimeout(() => {
+                doc.classList.remove('flicker-animation', 'glitch-screen');
+                document.getElementById('modalOverlay').classList.remove('hidden');
+                document.getElementById('modalOverlay').classList.add('flex');
+            }, 800);
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.add('hidden');
+            document.getElementById('modalOverlay').classList.remove('flex');
+        }
+    </script>
+</body>
+</html>
